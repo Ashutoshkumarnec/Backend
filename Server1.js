@@ -10,6 +10,7 @@ app.use(
     extended: false
   })
 );
+app.set("port", process.env.PORT || 5000);
 app.use(bodyParser.json());
 // mongoose.connect(
 //   "mongodb://localhost:27017/ChatApp",
@@ -23,8 +24,8 @@ app.get("/", function(err, res) {
 });
 var server = require("http").Server(app);
 var io = require("socket.io")(server);
-server.listen(3000, function() {
-  console.log("Server is Running at 3000");
+server.listen(app.get("port"), function() {
+  console.log("Server is Running at 3000", app.get("port"));
 });
 app.get("/", function(req, res) {
   res.sendFile(__dirname + "/index.html");

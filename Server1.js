@@ -3,7 +3,8 @@ var app = express();
 var cors = require("cors");
 var router = require("./Router/ChatRoutes.js");
 var bodyParser = require("body-parser");
-var mongoose = require("mongoose");
+// var mongoose = require("mongoose");
+var mongodb = require("mongodb").MongoClient;
 app.use(cors());
 app.use(
   bodyParser.urlencoded({
@@ -12,10 +13,20 @@ app.use(
 );
 app.set("port", process.env.PORT || 5000);
 app.use(bodyParser.json());
-mongoose.connect(
+// mongoose.connect(
+//   "mongodb://Ashutoshnec:Ashutosh)(*&^%$#@!1@ds121373.mlab.com:21373/chatapp",
+//   function() {
+//     console.log("Mongo Database Connected");
+//   }
+// );
+mongodb.connect(
   "mongodb://Ashutoshnec:Ashutosh)(*&^%$#@!1@ds121373.mlab.com:21373/chatapp",
-  function() {
-    console.log("Mongo Database Connected");
+  function(err, res) {
+    if (err) {
+      console.log("Error in connection to MongoDb", err);
+    } else {
+      console.log("Database connected");
+    }
   }
 );
 app.use("/", router);

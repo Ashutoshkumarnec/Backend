@@ -25,7 +25,7 @@ router.post("/UpdateAllUser", async function(req, res) {
     res.send({ alluser: finds });
   } catch (err) {}
 });
-router.get("/", function(req, res) {
+router.get("/Show", function(req, res) {
   res.send("Hello everyone");
 });
 router.post("/SignUps", async function(req, res) {

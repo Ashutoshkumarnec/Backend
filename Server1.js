@@ -12,12 +12,12 @@ app.use(
 );
 app.set("port", process.env.PORT || 5000);
 app.use(bodyParser.json());
-// mongoose.connect(
-//   "mongodb://localhost:27017/ChatApp",
-//   function() {
-//     console.log("Mongo Database Connected");
-//   }
-// );
+mongoose.connect(
+  "mongodb://Ashutoshk:Ashutosh@1@ds121203.mlab.com:21203/chatapp",
+  function() {
+    console.log("Mongo Database Connected");
+  }
+);
 app.use("/", router);
 // app.get("/", function(err, res) {
 //   res.send("Hello");

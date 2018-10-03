@@ -17,7 +17,10 @@ app.use(bodyParser.json());
 //     console.log("Mongo Database Connected");
 //   }
 // );
-app.use("/", router);
+// app.use("/", router);
+app.get("/", function(err, res) {
+  res.send("Hello");
+});
 var server = require("http").Server(app);
 var io = require("socket.io")(server);
 server.listen(3000, function() {

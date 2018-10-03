@@ -19,16 +19,20 @@ app.use(bodyParser.json());
 //     console.log("Mongo Database Connected");
 //   }
 // );
-mongodb.connect(
-  "mongodb://Ashutoshnec:Ashutosh)(*&^%$#@!1@ds121373.mlab.com:21373/chatapp",
-  function(err, res) {
-    if (err) {
-      console.log("Error in connection to MongoDb", err);
-    } else {
-      console.log("Database connected");
+try {
+  mongodb.connect(
+    "mongodb://Ashutoshnec:Ashutosh)(*&^%$#@!1@ds121373.mlab.com:21373/chatapp",
+    function(err, res) {
+      if (err) {
+        console.log("Error in connection to MongoDb", err);
+      } else {
+        console.log("Database connected");
+      }
     }
-  }
-);
+  );
+} catch (err) {
+  console.log("Error", err);
+}
 app.use("/", router);
 // app.get("/", function(err, res) {
 //   res.send("Hello");

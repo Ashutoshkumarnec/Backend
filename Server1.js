@@ -1,7 +1,7 @@
 var express = require("express");
 var app = express();
 var cors = require("cors");
-var router = require("../Backend/Router/ChatRoutes.js");
+var router = require("Router/ChatRoutes.js");
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 app.use(cors());

@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 // );
 try {
   mongodb.connect(
-    "mongodb://Ashutoshnec:Ashutosh)(*&^%$#@!1@ds121373.mlab.com:21373/chatapp",
+    "mongodb://Admin:Ashutoshkumar1@ds121373.mlab.com:21373/chatapp",
     function(err, res) {
       if (err) {
         console.log("Error in connection to MongoDb", err);

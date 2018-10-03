@@ -138,24 +138,25 @@ router.post("/Verified", async function(req, res) {
 });
 router.post("/Registration", async function(req, res) {
   try {
-    console.log("Registration Details :", req.body);
-    let check = await emailExists({
-      sender: "priya16nec@gmail.com",
-      recipient: req.body.email,
-      timeout: 7000
-    });
-    if (check === "MAY_EXIST") {
-      var resultsfromapi = await userapi.CreateRegister(req.body);
-      var resultfromapi1 = await userapi.Findss1(req.body.email);
-      var sendmail = await mailer.Sendsmail(
-        req.body.email,
-        resultfromapi1[0]._id,
-        "Login"
-      );
-      res.send({ data: "Registration Successful , Verify your Account" });
-    } else {
-      res.send({ data: "Google account not found" });
-    }
+    // console.log("Registration Details :", req.body);
+    // let check = await emailExists({
+    //   sender: "priya16nec@gmail.com",
+    //   recipient: req.body.email,
+    //   timeout: 7000
+    // });
+    // if (check === "MAY_EXIST") {
+    //   var resultsfromapi = await userapi.CreateRegister(req.body);
+    //   var resultfromapi1 = await userapi.Findss1(req.body.email);
+    //   var sendmail = await mailer.Sendsmail(
+    //     req.body.email,
+    //     resultfromapi1[0]._id,
+    //     "Login"
+    //   );
+    //   res.send({ data: "Registration Successful , Verify your Account" });
+    // } else {
+    //   res.send({ data: "Google account not found" });
+    // }
+    res.send({ data: "ok" });
   } catch (err) {
     res.send({ data: "User Allready Registered" });
     console.log(err);

@@ -18,14 +18,14 @@ app.use(bodyParser.json());
 //     console.log("Mongo Database Connected");
 //   }
 // );
-// app.use("/", router);
-app.get("/", function(err, res) {
-  res.send("Hello");
-});
+app.use("/", router);
+// app.get("/", function(err, res) {
+//   res.send("Hello");
+// });
 var server = require("http").Server(app);
 var io = require("socket.io")(server);
 server.listen(app.get("port"), function() {
-  console.log("Server is Running at 3000", app.get("port"));
+  console.log("Server is Running at ", app.get("port"));
 });
 app.get("/", function(req, res) {
   res.sendFile(__dirname + "/index.html");

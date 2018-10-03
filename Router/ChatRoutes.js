@@ -1,8 +1,8 @@
 var express = require("express");
 var router = express.Router();
 const emailExists = require("email-exists");
-var userapi = require("./API/ChatApi.js");
-var mailer = require("./NodeMailer/nodemailer.js");
+var userapi = require("../API/ChatApi.js");
+var mailer = require("../NodeMailer/nodemailer.js");
 // router.post("/SignUp", async function(req, res) {
 //   try {
 //     console.log("Response fron Client", req.body);

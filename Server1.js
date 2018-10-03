@@ -13,7 +13,7 @@ app.use(
 app.set("port", process.env.PORT || 5000);
 app.use(bodyParser.json());
 mongoose.connect(
-  "mongodb://Ashutoshk:Ashutosh@1@ds121203.mlab.com:21203/chatapp",
+  "mongodb://Ashutoshnec:Ashutosh)(*&^%$#@!1@ds121373.mlab.com:21373/chatapp",
   function() {
     console.log("Mongo Database Connected");
   }

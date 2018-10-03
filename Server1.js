@@ -11,12 +11,12 @@ app.use(
   })
 );
 app.use(bodyParser.json());
-mongoose.connect(
-  "mongodb://localhost:27017/ChatApp",
-  function() {
-    console.log("Mongo Database Connected");
-  }
-);
+// mongoose.connect(
+//   "mongodb://localhost:27017/ChatApp",
+//   function() {
+//     console.log("Mongo Database Connected");
+//   }
+// );
 app.use("/", router);
 var server = require("http").Server(app);
 var io = require("socket.io")(server);

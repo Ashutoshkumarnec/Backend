@@ -3,8 +3,8 @@ var app = express();
 var cors = require("cors");
 var router = require("./Router/ChatRoutes.js");
 var bodyParser = require("body-parser");
-// var mongoose = require("mongoose");
-var mongodb = require("mongodb");
+var mongoose = require("mongoose");
+// var mongodb = require("mongodb");
 app.use(cors());
 app.use(
   bodyParser.urlencoded({
@@ -13,27 +13,32 @@ app.use(
 );
 app.set("port", process.env.PORT || 5000);
 app.use(bodyParser.json());
-// mongoose.connect(
-//   "mongodb://Ashutoshnec:Ashutosh)(*&^%$#@!1@ds121373.mlab.com:21373/chatapp",
-//   function() {
-//     console.log("Mongo Database Connected");
-//   }
-// );
-try {
-  var url = process.env.MONGOLAB_URI;
-  mongodb.connect(
-    url,
-    function(err, res) {
-      if (err) {
-        console.log("Error in connection to MongoDb", err);
-      } else {
-        console.log("Database connected");
-      }
+var url = process.env.MONGOLAB_URI;
+mongoose.connect(
+  url,
+  function(err, con) {
+    if (err) {
+      console.log("Error");
+    } else {
+      console.log("Mongo Database Connected");
     }
-  );
-} catch (err) {
-  console.log("Error", err);
-}
+  }
+);
+// try {
+//   var url = process.env.MONGOLAB_URI;
+//   mongodb.connect(
+//     url,
+//     function(err, res) {
+//       if (err) {
+//         console.log("Error in connection to MongoDb", err);
+//       } else {
+//         console.log("Database connected");
+//       }
+//     }
+//   );
+// } catch (err) {
+//   console.log("Error", err);
+// }
 app.use("/", router);
 // app.get("/", function(err, res) {
 //   res.send("Hello");

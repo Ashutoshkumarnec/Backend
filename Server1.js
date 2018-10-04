@@ -4,7 +4,7 @@ var cors = require("cors");
 var router = require("./Router/ChatRoutes.js");
 var bodyParser = require("body-parser");
 // var mongoose = require("mongoose");
-var mongodb = require("mongodb").MongoClient;
+var mongodb = require("mongodb");
 app.use(cors());
 app.use(
   bodyParser.urlencoded({
@@ -20,8 +20,9 @@ app.use(bodyParser.json());
 //   }
 // );
 try {
+  var url = process.env.MONGOLAB_URI;
   mongodb.connect(
-    "mongodb://Admin:Ashutoshkumar1@ds121373.mlab.com:21373/chatapp",
+    url,
     function(err, res) {
       if (err) {
         console.log("Error in connection to MongoDb", err);

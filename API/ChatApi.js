@@ -18,6 +18,17 @@ module.exports = {
       );
     });
   },
+  FindAllGroupUser: function(data) {
+    return new Promise((resolve, reject) => {
+      schema.find({ email: { $not: new RegExp(data) } }, function(err, res) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(res);
+        }
+      });
+    });
+  },
   resetdetailupd: function(data, data1) {
     return new Promise((resolve, reject) => {
       schema2.update(

@@ -19,14 +19,21 @@ var mailer = require("../NodeMailer/nodemailer.js");
 //     res.send({ data: "User Already Registered" });
 //   }
 // });
+router.post("/GroupAdd", async function(req, res) {
+  try {
+    console.log("Adding all users");
+    var Find = await userapi.FindAllGroupUser(req.body.email);
+    res.send({ data: Find });
+    console.log("All Group user", Find);
+  } catch (err) {
+    console.log("Error", err);
+  }
+});
 router.post("/UpdateAllUser", async function(req, res) {
   try {
     let finds = await userapi.FindAll(req.body.email);
     res.send({ alluser: finds });
   } catch (err) {}
-});
-router.get("/Show", function(req, res) {
-  res.send("Hello everyone");
 });
 router.post("/SignUps", async function(req, res) {
   try {
@@ -156,7 +163,6 @@ router.post("/Registration", async function(req, res) {
     } else {
       res.send({ data: "Google account not found" });
     }
-    // res.send({ data: "ok" });
   } catch (err) {
     res.send({ data: "User Allready Registered" });
     console.log(err);

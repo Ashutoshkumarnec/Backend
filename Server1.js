@@ -58,7 +58,7 @@ var index;
 io.on("connection", function(socket) {
   console.log("User Connected", socket.id);
   var socket_id = socket.id;
-  socket.on("new-user", function(username, callback) {
+  socket.on("new-user", async function(username, callback) {
     console.log(username, "Online");
     for (var i = 0; i < names.length; i++) {
       console.log("Loop value", i);
@@ -89,14 +89,14 @@ io.on("connection", function(socket) {
       socket.username = username;
       names.push(socket.username);
       ids.push(socket.id);
-      updatenicknames();
+      await updatenicknames();
       // io.emit("usernames", names);
       console.log(names);
       console.log(ids);
       socket.emit("Server-Send-Text", "  Connected");
     }
   });
-  socket.on("ForceLogout", function(user) {
+  socket.on("ForceLogout", async function(user) {
     var keys;
     console.log("User to be Logged out ", user);
     for (var i = 0; i < names.length; i++) {
@@ -111,8 +111,8 @@ io.on("connection", function(socket) {
     if (keys === 1) {
       var idss = names.indexOf(user);
       var socketsid = ids[idss];
-      names.splice(names.indexOf(user), 1);
-      ids.splice(idss, 1);
+      await delete names[names.indexOf(user)];
+      await delete ids[idss];
       keys = 0;
       socket.broadcast
         .to(socketsid)
@@ -160,11 +160,12 @@ io.on("connection", function(socket) {
     io.emit("usernames", names);
     console.log("USer Connected", names);
   }
-  socket.on("Logout", function(data) {
+  socket.on("Logout", async function(data) {
     if (!socket.username) return;
-    names.splice(names.indexOf(socket.username), 1);
-    ids.splice(ids.indexOf(socket.id), 1);
-    updatenicknames();
+    await delete names[names.indexOf(data)];
+    await delete ids[names.indexOf(data)];
+    await io.emit("usernames", names);
+    // updatenicknames();
     // io.emit("Server-Send-Text", data, "  Disconnected");
     console.log("User Disconnected", socket.username);
   });
@@ -172,13 +173,14 @@ io.on("connection", function(socket) {
     console.log("Unmounting value", value);
   });
   // socket.on("Send Message", function(data) {});
-  socket.on("disconnect", function(data) {
+  socket.on("disconnect", async function(data) {
     if (!socket.username) return;
-    names.splice(names.indexOf(socket.username), 1);
-    ids.splice(ids.indexOf(socket.id), 1);
+    await delete names[names.indexOf(socket.username)];
+    await delete ids[ids.indexOf(socket.id)];
     app.use("/ChangeStatus1", router);
-    updatenicknames();
-    io.emit("Server-Send-Text", data, "  Disconnected");
+    // updatenicknames();
+    await io.emit("usernames", names);
+    // io.emit("Server-Send-Text", data, "  Disconnected");
     console.log("User Disconnected", socket.username);
   });
 });

@@ -15,7 +15,7 @@ module.exports = {
         subject: "Email Verification",
         // text: "Otp :" + otp
         html:
-          "<a href=http://192.168.100.143:3001/Login?id=" +
+          "<a href=https://go-for-chat.herokuapp.com/Login?id=" +
           data1 +
           ">Click here to verify</a>"
       };
@@ -25,7 +25,7 @@ module.exports = {
         subject: "Email Verification ",
         // text: "Otp :" + otp
         html:
-          "<a href=http://192.168.100.143:3001/Reset?id=" +
+          "<a href=https://go-for-chat.herokuapp.com/Reset?id=" +
           data1 +
           "&token=" +
           token +

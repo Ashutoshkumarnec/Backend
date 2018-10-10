@@ -54,6 +54,7 @@ app.get("/", function(req, res) {
 var names = [],
   ids = [];
 key = 0;
+var Socket_object = [];
 var index;
 io.on("connection", function(socket) {
   console.log("User Connected", socket.id);
@@ -86,6 +87,8 @@ io.on("connection", function(socket) {
       io.to(socket_id).emit("Error", "Login Not Allowed ");
     } else {
       // console.log("Error1", names.length());
+      console.log("Inside else");
+      await Socket_object.push(socket);
       socket.username = username;
       names.push(socket.username);
       ids.push(socket.id);
@@ -122,6 +125,36 @@ io.on("connection", function(socket) {
   socket.on("Reload", function(msg) {
     io.emit("Reloads", "Now");
   });
+  socket.on("CreatedGroup", async function(GroupUser, room) {
+    console.log("All Group User", GroupUser, "Room :", room);
+    for (var i = 0; i < GroupUser.length; i++) {
+      var indexs = await names.indexOf(GroupUser[i]);
+      await Socket_object[indexs].join(room);
+    }
+    socket.broadcast.to(room).emit("NewGroupJoined", "Joined");
+    // io.sockets.in(room).emit("NewGroupJoined", "Joined");
+    // io.to(room).emit("NewGroupJoined", "Joined");
+  });
+  socket.on("NewGroup", async function(username) {
+    console.log("New Group Users", username);
+    if (username.length !== 0) {
+      for (var i = 0; i < username.length; i++) {
+        console.log("Group Room", username[i].GroupRoom);
+        console.log("Socket.id", socket.id);
+        await socket.join(username[i].GroupRoom);
+        // console.log("Socket Details", socket);
+      }
+    }
+  });
+  socket.on("NewGroupMessage", function(text, Groupname, room, Messageby) {
+    console.log("GroupName", Groupname);
+    socket.broadcast.to(room).emit("GroupMessage", {
+      Messagefrom: Groupname,
+      Message: text,
+      Room: room,
+      MessageBy: Messageby
+    });
+  });
   socket.on("is-typing", function(user) {
     console.log("typing");
     index = names.indexOf(user);
@@ -156,16 +189,17 @@ io.on("connection", function(socket) {
       .to(socket.id)
       .emit("Error1", "You are not Allowed to Login");
   }
-  function updatenicknames() {
-    io.emit("usernames", names);
+  async function updatenicknames() {
+    await io.emit("usernames", names);
     console.log("USer Connected", names);
   }
   socket.on("Logout", async function(data) {
-    if (!socket.username) return;
+    // if (!socket.username) return;
+    // await names.splice(names.indexOf(data), 1);
+    // await ids.splice(names.indexOf(data), 1);
     await delete names[names.indexOf(data)];
     await delete ids[names.indexOf(data)];
     await io.emit("usernames", names);
-    // updatenicknames();
     // io.emit("Server-Send-Text", data, "  Disconnected");
     console.log("User Disconnected", socket.username);
   });
@@ -175,11 +209,16 @@ io.on("connection", function(socket) {
   // socket.on("Send Message", function(data) {});
   socket.on("disconnect", async function(data) {
     if (!socket.username) return;
+    console.log("Disconnected names", socket.username);
+    // await names.splice(names.indexOf(socket.username), 1);
+    // await ids.splice(ids.indexOf(socket.id), 1);
     await delete names[names.indexOf(socket.username)];
     await delete ids[ids.indexOf(socket.id)];
+    await delete Socket_object[ids.indexOf(socket.id)];
     app.use("/ChangeStatus1", router);
-    // updatenicknames();
+    console.log("Connected Users", names);
     await io.emit("usernames", names);
+    // await updatenicknames();
     // io.emit("Server-Send-Text", data, "  Disconnected");
     console.log("User Disconnected", socket.username);
   });

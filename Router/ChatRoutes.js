@@ -3,6 +3,7 @@ var router = express.Router();
 const emailExists = require("email-exists");
 var userapi = require("../API/ChatApi.js");
 var mailer = require("../NodeMailer/nodemailer.js");
+var users = [];
 // router.post("/SignUp", async function(req, res) {
 //   try {
 //     console.log("Response fron Client", req.body);
@@ -19,12 +20,66 @@ var mailer = require("../NodeMailer/nodemailer.js");
 //     res.send({ data: "User Already Registered" });
 //   }
 // });
+router.post("/SaveGroupMessages", async function(req, res) {
+  try {
+    console.log("Group Message Details", req.body);
+    var Find = await userapi.FindsGroupMsg(req.body.Room);
+    if (Find.length !== 0) {
+      console.log("Message found");
+      userapi.UpdateGroupMessage(req.body);
+      res.send({ data: "Messages Updated" });
+    } else {
+      var GroupMessage = userapi.SaveGroupMessage(req.body);
+      res.send({ data: "Message Saved" });
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+router.post("/SendGroupDetails", async function(req, res) {
+  try {
+    var found = await userapi.FindGroupDetails(req.body.email);
+    res.send({ data: found });
+  } catch (err) {
+    console.log(err);
+  }
+});
+router.post("/AddGroupDetails", async function(req, res) {
+  try {
+    console.log("Response from FrontEnd", req.body);
+    var find = await userapi.InserDetails(req.body);
+    // for (var i = 0; i < req.body.GroupUser.length; i++) {
+    //   users.push({ Username: req.body.GroupUser[i] });
+    // }
+    console.log("all User", users);
+    var find1 = await userapi.PushUser(req.body);
+    var found = await userapi.FindGroupDetails(req.body.Admin);
+    res.send({ data: found });
+    console.log("All Group", found);
+  } catch (err) {
+    console.log("Error", err);
+  }
+});
 router.post("/GroupAdd", async function(req, res) {
   try {
     console.log("Adding all users");
     var Find = await userapi.FindAllGroupUser(req.body.email);
     res.send({ data: Find });
     console.log("All Group user", Find);
+  } catch (err) {
+    console.log("Error", err);
+  }
+});
+router.post("/FindGroupMessage", async function(req, res) {
+  try {
+    console.log("AllBody Details", req.body);
+    let FindGroupMessage = await userapi.FindsGroupMsg(req.body.Room);
+    if (FindGroupMessage.length !== 0) {
+      console.log("Details Found");
+      res.send({ data: FindGroupMessage });
+    } else {
+      res.send({ data: "No Record" });
+    }
   } catch (err) {
     console.log("Error", err);
   }
@@ -44,10 +99,12 @@ router.post("/SignUps", async function(req, res) {
     console.log("All users", finds);
     let resultfromapi1 = await userapi.find(req.body);
     console.log("After SignUp", resultfromapi1[0]._id);
+    var found = await userapi.FindGroupDetails(req.body.email);
     res.send({
       data: resultfromapi1[0]._id,
       data1: resultfromapi1[0].Status,
-      alluser: finds
+      alluser: finds,
+      AllGroupUser: found
     });
   } catch (err) {
     res.send({ data: "User Already Registered" });

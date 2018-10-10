@@ -1,6 +1,8 @@
 var schema1 = require("../Schema/ChatSchema.js");
 var schema = require("../Schema/RegisterSchema.js");
 var schema2 = require("../Schema/ResetSchema");
+var schema3 = require("../Schema/GroupUserDetails");
+var schema4 = require("../Schema/GroupMessage");
 module.exports = {
   createnewuser: function(data) {
     return new Promise((resolve, reject) => {
@@ -16,6 +18,87 @@ module.exports = {
           }
         }
       );
+    });
+  },
+  UpdateGroupMessage: function(data) {
+    return new Promise((resolve, reject) => {
+      schema4.update(
+        { GroupRoom: data.Room },
+        {
+          $push: {
+            Message: [
+              {
+                Messagefrom: data.OwnUsername,
+                Messages: data.Message,
+                Time: data.Time
+              }
+            ]
+          }
+        },
+        function(err, res) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(res);
+          }
+        }
+      );
+    });
+  },
+  SaveGroupMessage: function(data) {
+    return new Promise((resolve, reject) => {
+      schema4.create({
+        GroupRoom: data.Room,
+        Message: {
+          Messagefrom: data.OwnUsername,
+          Messages: data.Message,
+          Time: data.Time
+        }
+      });
+    });
+  },
+  FindsGroupMsg: function(data) {
+    return new Promise((resolve, reject) => {
+      schema4.find({ GroupRoom: data }, function(err, res) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(res);
+        }
+      });
+    });
+  },
+  InserDetails: function(data) {
+    return new Promise((resolve, reject) => {
+      schema3.create(
+        {
+          GroupName: data.GroupName,
+          GroupRoom: data.GroupRoom,
+          GroupUser: [],
+          GroupAdmin: data.Admin
+        },
+        function(err, res) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(res);
+          }
+        }
+      );
+    });
+  },
+  FindGroupDetails: function(data) {
+    return new Promise((resolve, reject) => {
+      schema3.find({ GroupUser: { $elemMatch: { $eq: data } } }, function(
+        err,
+        res
+      ) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(res);
+        }
+      });
     });
   },
   FindAllGroupUser: function(data) {
@@ -330,6 +413,21 @@ module.exports = {
           resolve(res);
         }
       });
+    });
+  },
+  PushUser: function(data) {
+    return new Promise((resolve, reject) => {
+      schema3.update(
+        { GroupRoom: data.GroupRoom },
+        { $push: { GroupUser: { $each: data.GoupUser } } },
+        function(err, res) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(res);
+          }
+        }
+      );
     });
   },
   SaveMessage: function(data, data1) {

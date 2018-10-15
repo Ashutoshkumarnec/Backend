@@ -8,7 +8,8 @@ var userschema = new schema(
     password: { type: String },
     Status: { type: String },
     Verified: { type: Boolean },
-    Login: { type: String }
+    Login: { type: String },
+    LastSeen: { type: String }
   },
   { collection: "SignUpDetails" }
 );

@@ -166,6 +166,9 @@ router.post("/Reset1", async function(req, res) {
     res.send({ data: "User Already Registered" });
   }
 });
+router.post("/ChangeStatus1", function(req, res) {
+  console.log("Logged out");
+});
 router.post("/Login", async function(req, res) {
   try {
     console.log("Data from Front End", req.body);
@@ -256,12 +259,41 @@ router.post("/Forget", async function(req, res) {
     console.log(err);
   }
 });
-
+router.post("/ChangeSeenStatus", async function(req, res) {
+  try {
+    let resultfromapi1 = await userapi.find(req.body);
+    await userapi.UpdateMessageSeen(
+      req.body.myid,
+      resultfromapi1[0]._id,
+      req.body.Username
+    );
+    await userapi.UpdateMessageSeen1(
+      req.body.myid,
+      resultfromapi1[0]._id,
+      req.body.Username
+    );
+    res.send({ data: "Done" });
+  } catch (err) {
+    console.log(err);
+  }
+});
 router.post("/Find", async function(req, res) {
   try {
     console.log("All user ", req.body);
     let resultfromapi1 = await userapi.find(req.body);
     console.log("Result from api", resultfromapi1[0]._id);
+    let lastseen = await userapi.LastSeen(req.body.Username);
+    console.log("LastSeen", lastseen[0].LastSeen);
+    await userapi.UpdateMessageSeen(
+      req.body.myid,
+      resultfromapi1[0]._id,
+      req.body.Username
+    );
+    await userapi.UpdateMessageSeen1(
+      req.body.myid,
+      resultfromapi1[0]._id,
+      req.body.Username
+    );
     let findmessages = await userapi.FindAllMesg(
       req.body.myid,
       resultfromapi1[0]._id
@@ -273,9 +305,9 @@ router.post("/Find", async function(req, res) {
     );
     console.log("All Massage");
     if (findmessages.length != 0) {
-      res.send({ data: findmessages[0] });
+      res.send({ data: findmessages[0], data1: lastseen[0].LastSeen });
     } else if (findmessages1.length != 0) {
-      res.send({ data: findmessages1[0] });
+      res.send({ data: findmessages1[0], data1: lastseen[0].LastSeen });
     } else {
       res.send({ data: "No Record" });
     }

@@ -20,6 +20,31 @@ module.exports = {
       );
     });
   },
+  UpdateLastSeen: function(data, data1) {
+    return new Promise((resolve, reject) => {
+      schema.update({ email: data }, { $set: { LastSeen: data1 } }, function(
+        err,
+        res
+      ) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(res);
+        }
+      });
+    });
+  },
+  LastSeen: function(data) {
+    return new Promise((resolve, reject) => {
+      schema.find({ email: data }, { LastSeen: 1 }, function(err, res) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(res);
+        }
+      });
+    });
+  },
   UpdateGroupMessage: function(data) {
     return new Promise((resolve, reject) => {
       schema4.update(
@@ -499,6 +524,38 @@ module.exports = {
             ]
           }
         },
+        function(err, res) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(res);
+          }
+        }
+      );
+    });
+  },
+  UpdateMessageSeen1: function(data, data1, data2) {
+    return new Promise((resolve, reject) => {
+      schema1.update(
+        { member2id: data, member1id: data1 },
+        { $set: { "Message.$[elem].Seen": "yes" } },
+        { multi: true, arrayFilters: [{ "elem.Messagefrom": data2 }] },
+        function(err, res) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(res);
+          }
+        }
+      );
+    });
+  },
+  UpdateMessageSeen: function(data, data1, data2) {
+    return new Promise((resolve, reject) => {
+      schema1.update(
+        { member1id: data, member2id: data1 },
+        { $set: { "Message.$[elem].Seen": "yes" } },
+        { multi: true, arrayFilters: [{ "elem.Messagefrom": data2 }] },
         function(err, res) {
           if (err) {
             reject(err);

@@ -228,7 +228,7 @@ io.on("connection", function(socket) {
     var ampm = hours >= 12 ? "pm" : "am";
     hours = hours % 12;
     hours = hours ? hours : 12;
-    var g = minutes / 60;
+    var g = Math.floor(minutes / 60);
     hours = hours + g;
     minutes = minutes % 60;
     minutes = minutes < 10 ? "0" + minutes : minutes;

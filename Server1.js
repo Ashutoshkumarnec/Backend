@@ -228,6 +228,8 @@ io.on("connection", function(socket) {
     var ampm = hours >= 12 ? "pm" : "am";
     hours = hours % 12;
     hours = hours ? hours : 12;
+    hours = hours + minutes / 60;
+    minutes = minutes % 60;
     minutes = minutes < 10 ? "0" + minutes : minutes;
     var Seconds = sec < 10 ? "0" + sec : sec;
     var month = monthNames[d.getMonth()];

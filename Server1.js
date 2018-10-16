@@ -249,11 +249,11 @@ io.on("connection", function(socket) {
       minutes +
       " " +
       ampm;
-    var status = "last seen " + tyme;
-    await api.UpdateLastSeen(socket.username, status);
+    var status1 = "last seen " + tyme;
+    await api.UpdateLastSeen(socket.username, status1);
     await delete names[names.indexOf(data)];
     await delete ids[names.indexOf(data)];
-    await io.emit("usernames", names, socket.username, status);
+    await io.emit("usernames", names, socket.username, status1);
     // io.emit("Server-Send-Text", data, "  Disconnected");
     console.log("User Disconnected", socket.username);
   });

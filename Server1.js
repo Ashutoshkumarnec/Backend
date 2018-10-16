@@ -220,32 +220,32 @@ io.on("connection", function(socket) {
   }
   function AssignTime() {
     var d = new Date();
-    // var hours = d.getHours();
-    // var minutes = d.getMinutes();
-    // var sec = d.getSeconds();
-    // var dat = d.getDate();
-    // dat = dat < 10 ? "0" + dat : dat;
-    // var ampm = hours >= 12 ? "pm" : "am";
-    // hours = hours % 12;
-    // hours = hours ? hours : 12;
-    // minutes = minutes < 10 ? "0" + minutes : minutes;
-    // var Seconds = sec < 10 ? "0" + sec : sec;
-    // var month = monthNames[d.getMonth()];
-    // var week = WeekNames[d.getDay()];
-    // var tyme =
-    //   week +
-    //   " " +
-    //   month +
-    //   " " +
-    //   dat +
-    //   " " +
-    //   d.getFullYear() +
-    //   " " +
-    //   hours +
-    //   ":" +
-    //   minutes +
-    //   " " +
-    //   ampm;
+    var hours = d.getHours() + 5;
+    var minutes = d.getMinutes() + 30;
+    var sec = d.getSeconds();
+    var dat = d.getDate();
+    dat = dat < 10 ? "0" + dat : dat;
+    var ampm = hours >= 12 ? "pm" : "am";
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    var Seconds = sec < 10 ? "0" + sec : sec;
+    var month = monthNames[d.getMonth()];
+    var week = WeekNames[d.getDay()];
+    var tyme =
+      week +
+      " " +
+      month +
+      " " +
+      dat +
+      " " +
+      d.getFullYear() +
+      " " +
+      hours +
+      ":" +
+      minutes +
+      " " +
+      ampm;
     return d;
   }
   socket.on("Logout", async function(data) {

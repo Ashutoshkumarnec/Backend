@@ -218,10 +218,7 @@ io.on("connection", function(socket) {
     await io.emit("usernames", names, username, "online");
     console.log("USer Connected", names);
   }
-  socket.on("Logout", async function(data) {
-    // if (!socket.username) return;
-    // await names.splice(names.indexOf(data), 1);
-    // await ids.splice(names.indexOf(data), 1);
+  function AssignTime() {
     var d = new Date();
     var hours = d.getHours();
     var minutes = d.getMinutes();
@@ -249,7 +246,41 @@ io.on("connection", function(socket) {
       minutes +
       " " +
       ampm;
-    var status1 = "last seen " + tyme;
+    return tyme;
+  }
+  socket.on("Logout", async function(data) {
+    // if (!socket.username) return;
+    // await names.splice(names.indexOf(data), 1);
+    // await ids.splice(names.indexOf(data), 1);
+    // var d = new Date();
+    // var hours = d.getHours();
+    // var minutes = d.getMinutes();
+    // var sec = d.getSeconds();
+    // var dat = d.getDate();
+    // dat = dat < 10 ? "0" + dat : dat;
+    // var ampm = hours >= 12 ? "pm" : "am";
+    // hours = hours % 12;
+    // hours = hours ? hours : 12;
+    // minutes = minutes < 10 ? "0" + minutes : minutes;
+    // var Seconds = sec < 10 ? "0" + sec : sec;
+    // var month = monthNames[d.getMonth()];
+    // var week = WeekNames[d.getDay()];
+    // var tyme =
+    //   week +
+    //   " " +
+    //   month +
+    //   " " +
+    //   dat +
+    //   " " +
+    //   d.getFullYear() +
+    //   " " +
+    //   hours +
+    //   ":" +
+    //   minutes +
+    //   " " +
+    //   ampm;
+    var tym = await AssignTime;
+    var status1 = "last seen " + tym;
     await api.UpdateLastSeen(socket.username, status1);
     await delete names[names.indexOf(data)];
     await delete ids[names.indexOf(data)];
@@ -272,33 +303,34 @@ io.on("connection", function(socket) {
     console.log("Disconnected names", socket.username);
     // await names.splice(names.indexOf(socket.username), 1);
     // await ids.splice(ids.indexOf(socket.id), 1);
-    var d = new Date();
-    var hours = d.getHours();
-    var minutes = d.getMinutes();
-    var sec = d.getSeconds();
-    var dat = d.getDate();
-    dat = dat < 10 ? "0" + dat : dat;
-    var ampm = hours >= 12 ? "pm" : "am";
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-    minutes = minutes < 10 ? "0" + minutes : minutes;
-    var Seconds = sec < 10 ? "0" + sec : sec;
-    var month = monthNames[d.getMonth()];
-    var week = WeekNames[d.getDay()];
-    var tyme =
-      week +
-      " " +
-      month +
-      " " +
-      dat +
-      " " +
-      d.getFullYear() +
-      " " +
-      hours +
-      ":" +
-      minutes +
-      " " +
-      ampm;
+    // var d = new Date();
+    // var hours = d.getHours();
+    // var minutes = d.getMinutes();
+    // var sec = d.getSeconds();
+    // var dat = d.getDate();
+    // dat = dat < 10 ? "0" + dat : dat;
+    // var ampm = hours >= 12 ? "pm" : "am";
+    // hours = hours % 12;
+    // hours = hours ? hours : 12;
+    // minutes = minutes < 10 ? "0" + minutes : minutes;
+    // var Seconds = sec < 10 ? "0" + sec : sec;
+    // var month = monthNames[d.getMonth()];
+    // var week = WeekNames[d.getDay()];
+    // var tyme =
+    //   week +
+    //   " " +
+    //   month +
+    //   " " +
+    //   dat +
+    //   " " +
+    //   d.getFullYear() +
+    //   " " +
+    //   hours +
+    //   ":" +
+    //   minutes +
+    //   " " +
+    //   ampm;
+    var tyme = await AssignTime;
     var status = "last seen " + tyme;
     await delete names[names.indexOf(socket.username)];
     await delete ids[ids.indexOf(socket.id)];

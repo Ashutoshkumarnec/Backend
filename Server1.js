@@ -279,7 +279,7 @@ io.on("connection", function(socket) {
     //   minutes +
     //   " " +
     //   ampm;
-    var tym = await AssignTime;
+    var tym = await AssignTime();
     var status1 = "last seen " + tym;
     await api.UpdateLastSeen(socket.username, status1);
     await delete names[names.indexOf(data)];
@@ -330,7 +330,7 @@ io.on("connection", function(socket) {
     //   minutes +
     //   " " +
     //   ampm;
-    var tyme = await AssignTime;
+    var tyme = await AssignTime();
     var status = "last seen " + tyme;
     await delete names[names.indexOf(socket.username)];
     await delete ids[ids.indexOf(socket.id)];

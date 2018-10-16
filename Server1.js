@@ -246,7 +246,7 @@ io.on("connection", function(socket) {
       minutes +
       " " +
       ampm;
-    return d;
+    return tyme;
   }
   socket.on("Logout", async function(data) {
     // if (!socket.username) return;

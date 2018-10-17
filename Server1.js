@@ -225,11 +225,12 @@ io.on("connection", function(socket) {
     var sec = d.getSeconds();
     var dat = d.getDate();
     dat = dat < 10 ? "0" + dat : dat;
-    var ampm = hours >= 12 ? "pm" : "am";
-    hours = hours % 12;
-    hours = hours ? hours : 12;
+
     var g = Math.floor(minutes / 60);
     hours = hours + g;
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    var ampm = hours >= 12 ? "pm" : "am";
     minutes = minutes % 60;
     minutes = minutes < 10 ? "0" + minutes : minutes;
     var Seconds = sec < 10 ? "0" + sec : sec;
